@@ -1,0 +1,111 @@
+{
+  "schema": 1,
+  "build": "rig-v59",
+  "board": "ESP32_S31_MOSAICO",
+  "firmware_version": "2026.11.14",
+  "device_root": "/flash/memoji-camera",
+  "entrypoint": "/flash/memoji-camera/app.py",
+  "startup": "explicit CLI start; does not install main.py or autorun",
+  "required": [
+    {
+      "source": "app.py",
+      "device_path": "/flash/memoji-camera/app.py",
+      "bytes": 17163,
+      "sha256": "68709ddd8a14814d31fcca44eaf32bc8256ead4ef7f2af9402938c2be2ce907d"
+    },
+    {
+      "source": "face_landmarks.py",
+      "device_path": "/flash/memoji-camera/face_landmarks.py",
+      "bytes": 3746,
+      "sha256": "bd83105fde82c0f82708db375ba1eb09eea752d8f1c3868fdb8e82d4524b9272"
+    },
+    {
+      "source": "lip_model.py",
+      "device_path": "/flash/memoji-camera/lip_model.py",
+      "bytes": 5628,
+      "sha256": "e6d4bc3c6b0397ca51b8cbd5ca54874a7cc7a6fc1009d1e031f8eb64cb4244e4"
+    },
+    {
+      "source": "mouth_geometry.py",
+      "device_path": "/flash/memoji-camera/mouth_geometry.py",
+      "bytes": 1141,
+      "sha256": "64f329fc422984f5bfebd67a9a7142a12d7543c143c16cd43095912ec943b942"
+    },
+    {
+      "source": "eye_model.py",
+      "device_path": "/flash/memoji-camera/eye_model.py",
+      "bytes": 12261,
+      "sha256": "32999b584bf3635cd1b9c41b750503f3da1c8c63acb70a4501ea4b6bc67830ba"
+    },
+    {
+      "source": "kitten_rig.py",
+      "device_path": "/flash/memoji-camera/kitten_rig.py",
+      "bytes": 15935,
+      "sha256": "631053728f9dedddf587b060d1a11e97a942888578698306e6c634bddc321521"
+    },
+    {
+      "source": "locator_debug.py",
+      "device_path": "/flash/memoji-camera/locator_debug.py",
+      "bytes": 3375,
+      "sha256": "d849a452aaa3e676320f9234f26f02028c609931e5ae58096428ec690cb60d88"
+    },
+    {
+      "source": "models/yunet/yunet-160-s31.espdl",
+      "device_path": "/flash/memoji-camera/yunet-160-s31.espdl",
+      "bytes": 238912,
+      "sha256": "4d44096058ca38aa4cf842664c332cd32ca30ca49e7769feb6927d9076fb0a49"
+    },
+    {
+      "source": "models/lips/pfld-lips-mixed-minmax.espdl",
+      "device_path": "/flash/memoji-camera/pfld-lips-mixed-minmax.espdl",
+      "bytes": 320144,
+      "sha256": "62097332c0af1cd2715d41963fcc83d5a47ba75a099a11301d293bec49694f2d",
+      "provision": "user-supplied"
+    },
+    {
+      "source": "models/eyes/eye_w16a16.espdl",
+      "device_path": "/flash/memoji-camera/eye_w16a16.espdl",
+      "bytes": 39712,
+      "sha256": "50e6d8785cadc94154b99f544adbd3daed1cc2b19761ae3ba7be9c1755d91833"
+    },
+    {
+      "source": "assets/kitten-rig/kitten-rig.pack",
+      "device_path": "/flash/memoji-camera/kitten-rig.pack",
+      "bytes": 118757,
+      "sha256": "6d73753ebd4bd67be3f25f60e1668da45145f8b30a58f8960c868af319ebefee"
+    },
+    {
+      "source": "assets/kitten-rig/kitten-rig.json",
+      "device_path": "/flash/memoji-camera/kitten-rig.json",
+      "bytes": 1286,
+      "sha256": "c09f3fabcb319c6b51a2f05131ff24fcb5ccf797ce97d58a51dd085b939dc153"
+    },
+    {
+      "source": "assets/product-labels-compact.pack",
+      "device_path": "/flash/memoji-camera/product-labels-compact.pack",
+      "bytes": 25098,
+      "sha256": "4106ca5429430eef19228918e82e2051a08eb8910c10afe6f379a87783332e2f"
+    },
+    {
+      "source": "assets/roi-labels.rgb565",
+      "device_path": "/flash/memoji-camera/roi-labels.rgb565",
+      "bytes": 230400,
+      "sha256": "359fde220d5b8d2b10422ab73152549801f401e4737a4ef8fb547b1ee09778bf"
+    },
+    {
+      "source": "product_labels.py",
+      "device_path": "/flash/memoji-camera/product_labels.py",
+      "bytes": 1225,
+      "sha256": "718abda7c5904f8f452c33c1091c0d021355e94ecd5b25a2abd9810202651499"
+    },
+    {
+      "source": "assets/uvc-warmup.jpg",
+      "device_path": "/flash/memoji-camera/uvc-warmup.jpg",
+      "bytes": 1827,
+      "sha256": "50fed45ee36d53beff1745b6f698c3475e99dc20cd86f8d0ccc17e9e63a262d7"
+    }
+  ],
+  "notes": [
+    "Full camera mode requires the user-supplied PFLD model. The pose replay uses no models."
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "repository": "https://github.com/zhaoyk1986/pfld_106_face_landmarks",
+  "commit": "b928b7d259a81178c4290142616e4e7ba9cf0e2e",
+  "source_path": "output/lite.onnx",
+  "source_sha256": "ce073227c4afee80e46abd98c8b99f5a55c3ad47f0f9cb2d2d333aeb510288f4",
+  "license_status": "test.py has MIT notice; full pretrained weight licensing not independently established. Local research candidate; no redistribution approval claimed.",
+  "input": "112x112 BGR /255, square face context; black border padding",
+  "output": "20 fixed pretrained lip points (original106-point indices52..71). No training or personal parameters.",
+  "runtime": "ESP-DL S31 mixed INT8 backbone / INT16 final Gemm; minmax activation and weight observers",
+  "runtime_file": "pfld-lips-mixed-minmax.espdl",
+  "runtime_bytes": 320144,
+  "runtime_sha256": "62097332c0af1cd2715d41963fcc83d5a47ba75a099a11301d293bec49694f2d",
+  "model_parameters": 227386,
+  "preparation": [
+    "tools/prepare_lip_model.py",
+    "tools/export_lip_model.py --quant mixed --observer minmax"
+  ],
+  "limitations": "Initial offline conversion samples are narrow. Ratio bias and false slight openings remain; full16 model did not fit camera+LCD pipeline. README13MMACC does not match this ONNX graph."
+}
