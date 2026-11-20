@@ -1,0 +1,151 @@
+{
+  "schema": 1,
+  "build": "rig-v77-independent-local-eye-support",
+  "board": "ESP32_S31_MOSAICO",
+  "firmware_version": "2026.11.14",
+  "device_root": "/flash/mikan-v60",
+  "entrypoint": "/flash/mikan-v60/pfld_app.py",
+  "required": [
+    {
+      "source": "runtime/v77/pfld_app.py",
+      "device_path": "/flash/mikan-v60/pfld_app.py",
+      "bytes": 15212,
+      "sha256": "c79e5a5e32a3a1b58dc082d50d1c37c986d81219fed15e776a9d554bc6796c50",
+      "origin_source": "pfld_app.py"
+    },
+    {
+      "source": "runtime/v77/pfld_tracking.py",
+      "device_path": "/flash/mikan-v60/pfld_tracking.py",
+      "bytes": 31440,
+      "sha256": "406f00b5d5e70d5f0f4ee20b460bdd961f7987632eac08c21160337351657caf",
+      "origin_source": "pfld_tracking.py"
+    },
+    {
+      "source": "runtime/v77/kitten_rig.py",
+      "device_path": "/flash/mikan-v60/kitten_rig.py",
+      "bytes": 21531,
+      "sha256": "2a5c495d72ced3ace8281bb5700542e3fe89b7a4bf4323ad90ec1b2c50ef523c",
+      "origin_source": "kitten_rig.py"
+    },
+    {
+      "source": "runtime/v77/mouth_geometry.py",
+      "device_path": "/flash/mikan-v60/mouth_geometry.py",
+      "bytes": 6647,
+      "sha256": "b3fbf5f7d0657a8cdc1ee02888f4763c210e4afdecb49df55e25d344442f6446",
+      "origin_source": "mouth_geometry.py"
+    },
+    {
+      "source": "runtime/v77/models/lips/pfld-36-presence.espdl",
+      "device_path": "/flash/mikan-v60/pfld-36-presence.espdl",
+      "bytes": 334672,
+      "sha256": "985b5a62445c9b68f6b6d00b148a592a0caa4826c0624fecdd7edaffa9419923",
+      "provision": "user-supplied",
+      "distributed": false,
+      "origin_source": "models/lips/pfld-36-presence.espdl"
+    },
+    {
+      "source": "runtime/v77/eyelid_contours.py",
+      "device_path": "/flash/mikan-v60/eyelid_contours.py",
+      "bytes": 9844,
+      "sha256": "0d2f4502a2ac191a58dc4ccc59c88dc7e9bf91e1012461bb36203c219bb4fc2d",
+      "origin_source": "eyelid_contours.py"
+    },
+    {
+      "source": "runtime/v77/models/eyes/eyelid-spatial-v71-s31.espdl",
+      "device_path": "/flash/mikan-v60/eyelid-contour-s31.espdl",
+      "bytes": 25504,
+      "sha256": "ea2579e3f46c174b158bcffaaaf50a4d31d61bec9e28c2f883ec1e1241c41055",
+      "provision": "user-supplied",
+      "distributed": false,
+      "origin_source": "models/eyes/eyelid-spatial-v71-s31.espdl"
+    },
+    {
+      "source": "runtime/v77/face_landmarks.py",
+      "device_path": "/flash/mikan-v60/face_landmarks.py",
+      "bytes": 3746,
+      "sha256": "bd83105fde82c0f82708db375ba1eb09eea752d8f1c3868fdb8e82d4524b9272",
+      "origin_source": "face_landmarks.py"
+    },
+    {
+      "source": "models/yunet/yunet-near-w8a8.espdl",
+      "device_path": "/flash/memoji-camera/yunet-near-w8a8.espdl",
+      "bytes": 152384,
+      "sha256": "89c9fea9b8ac9b840257ffd22105e07937bd8b73dac24b01add51fcca95980b7",
+      "origin_source": "models/yunet/yunet-near-w8a8.espdl"
+    }
+  ],
+  "shared_assets": [
+    {
+      "source": "assets/kitten-rig/kitten-rig.pack",
+      "device_path": "/flash/memoji-camera/kitten-rig.pack",
+      "bytes": 118757,
+      "sha256": "6d73753ebd4bd67be3f25f60e1668da45145f8b30a58f8960c868af319ebefee",
+      "origin_source": "assets/kitten-rig/kitten-rig.pack"
+    },
+    {
+      "source": "assets/kitten-rig/kitten-rig.json",
+      "device_path": "/flash/memoji-camera/kitten-rig.json",
+      "bytes": 1286,
+      "sha256": "c09f3fabcb319c6b51a2f05131ff24fcb5ccf797ce97d58a51dd085b939dc153",
+      "origin_source": "assets/kitten-rig/kitten-rig.json"
+    },
+    {
+      "source": "assets/uvc-warmup.jpg",
+      "device_path": "/flash/memoji-camera/uvc-warmup.jpg",
+      "bytes": 1827,
+      "sha256": "50fed45ee36d53beff1745b6f698c3475e99dc20cd86f8d0ccc17e9e63a262d7",
+      "origin_source": "assets/uvc-warmup.jpg"
+    }
+  ],
+  "pitch_follow_default": false,
+  "reuse_identical_center_frames": true,
+  "landmarks": {
+    "mouth": 20,
+    "image_left_eye": 8,
+    "image_right_eye": 8,
+    "presence_outputs": 1
+  },
+  "sensor_default": {
+    "framesize": "QVGA",
+    "pixformat": "RGB565"
+  },
+  "eye_geometry": "PFLD-guided 48x32 eye crops; median of five visible lid gaps from the spatial model",
+  "eye_model_output": {
+    "shape": [
+      1,
+      1152
+    ],
+    "dtype": "INT8",
+    "grid_height": 16,
+    "grid_width": 24,
+    "channels": [
+      "upper",
+      "lower",
+      "visible"
+    ],
+    "sampled_columns": [
+      7,
+      9,
+      12,
+      15,
+      17
+    ]
+  },
+  "expression_mapping": {
+    "eyes": "Independent two-of-three votes; no recent valid vote returns that eye to neutral",
+    "mouth": "frame-current normalized inner lip aperture, short closed-end hysteresis"
+  },
+  "face_tracking": "YuNet seeds full-face center and scale; PFLD tracks translation with scale locked until sustained independent refresh; confirmed face can survive loss of one eye texture while current presence and lip support stay strong",
+  "usb_preview": "Q40 JPEG with one reduced-quality retry on USB buffer exhaustion",
+  "eye_scheduling": "Capture eye patches before composition; normally infer eyes after LCD and UVC submissions. Mouth never waits for eye inference.",
+  "yaw_decode": "Use a 16 KiB zlib history window for independent slots no larger than 16 KiB",
+  "publication": {
+    "local_checkpoint": "2357bb8",
+    "runtime_source_bytes": "unchanged from the tested v77 checkpoint",
+    "excluded_weights": [
+      "PFLD pretrained export",
+      "custom spatial-eyelid export"
+    ],
+    "entrypoint_layout": "Retains tested /flash/mikan-v60 and shared /flash/memoji-camera paths. No firmware or main.py changes."
+  }
+}

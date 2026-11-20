@@ -1,0 +1,431 @@
+{
+  "consolidated_eye_gaps_on_same_board_outputs": {
+    "counts_columns": [
+      "labeled",
+      "v75_errors",
+      "v76_errors"
+    ],
+    "source_frames": 77,
+    "probe_frames": 231,
+    "counts": {
+      "training-origin": {
+        "open": [
+          12,
+          0,
+          0
+        ],
+        "closed": [
+          24,
+          5,
+          1
+        ]
+      },
+      "blink": {
+        "open": [
+          18,
+          2,
+          2
+        ],
+        "closed": [
+          30,
+          7,
+          2
+        ]
+      },
+      "all": {
+        "open": [
+          61,
+          2,
+          2
+        ],
+        "closed": [
+          72,
+          8,
+          3
+        ]
+      },
+      "normal": {
+        "open": [
+          6,
+          0,
+          0
+        ],
+        "closed": [
+          12,
+          2,
+          0
+        ]
+      },
+      "near": {
+        "open": [
+          6,
+          0,
+          0
+        ],
+        "closed": [
+          12,
+          3,
+          1
+        ]
+      },
+      "held-out-blink": {
+        "open": [
+          6,
+          2,
+          2
+        ],
+        "closed": [
+          6,
+          2,
+          1
+        ]
+      },
+      "glasses": {
+        "open": [
+          6,
+          2,
+          2
+        ],
+        "closed": [
+          6,
+          2,
+          1
+        ]
+      },
+      "development": {
+        "open": [
+          15,
+          0,
+          0
+        ],
+        "closed": [
+          12,
+          1,
+          1
+        ]
+      },
+      "talking": {
+        "open": [
+          28,
+          0,
+          0
+        ],
+        "closed": [
+          30,
+          0,
+          0
+        ]
+      },
+      "unilateral": {
+        "open": [
+          0,
+          0,
+          0
+        ],
+        "closed": [
+          6,
+          0,
+          0
+        ]
+      }
+    },
+    "changed_public_eye_values": [
+      [
+        "e-0",
+        1,
+        1,
+        0,
+        1
+      ],
+      [
+        "e-1",
+        1,
+        1,
+        0,
+        1
+      ],
+      [
+        "e-20",
+        0,
+        1,
+        0,
+        1
+      ],
+      [
+        "e-21",
+        1,
+        1,
+        0,
+        1
+      ],
+      [
+        "e-44",
+        1,
+        1,
+        0,
+        1
+      ]
+    ]
+  },
+  "on_device_installed_recheck": {
+    "source_frames": 26,
+    "confirmed_states_match_recomputation": 26,
+    "all_improved_labeled_cases_reproduced": true,
+    "eye_render_sides_verified_yaw_deg": [
+      -32,
+      0,
+      32
+    ]
+  },
+  "full_pipeline_ab": {
+    "graded": {
+      "mouth_and_track_identical_frames": 70,
+      "frames": 70,
+      "different_frames": [],
+      "timing": {
+        "v75": {
+          "centered": {
+            "frames": 35,
+            "tracked": 34,
+            "uvc_submitted": 34,
+            "processing_fps_fixture_decode_excluded": 6.24,
+            "median_lcd_ms_after_input_ready": 89.0,
+            "p95_lcd_ms_after_input_ready": 159,
+            "eye_stage_median_ms": 21.0,
+            "minimum_sampled_heap_bytes": [
+              278384,
+              139767,
+              31744
+            ]
+          },
+          "overlay": {
+            "frames": 35,
+            "tracked": 34,
+            "uvc_submitted": 35,
+            "processing_fps_fixture_decode_excluded": 3.9,
+            "median_lcd_ms_after_input_ready": 154.0,
+            "p95_lcd_ms_after_input_ready": 155,
+            "eye_stage_median_ms": 21.0,
+            "minimum_sampled_heap_bytes": [
+              277344,
+              139767,
+              31744
+            ]
+          }
+        },
+        "v76": {
+          "centered": {
+            "frames": 35,
+            "tracked": 34,
+            "uvc_submitted": 35,
+            "processing_fps_fixture_decode_excluded": 6.33,
+            "median_lcd_ms_after_input_ready": 89.0,
+            "p95_lcd_ms_after_input_ready": 158,
+            "eye_stage_median_ms": 21.0,
+            "minimum_sampled_heap_bytes": [
+              278352,
+              139767,
+              31744
+            ]
+          },
+          "overlay": {
+            "frames": 35,
+            "tracked": 34,
+            "uvc_submitted": 35,
+            "processing_fps_fixture_decode_excluded": 3.85,
+            "median_lcd_ms_after_input_ready": 154.0,
+            "p95_lcd_ms_after_input_ready": 155,
+            "eye_stage_median_ms": 22.0,
+            "minimum_sampled_heap_bytes": [
+              277376,
+              139767,
+              31744
+            ]
+          }
+        }
+      }
+    },
+    "glasses": {
+      "mouth_and_track_identical_frames": 55,
+      "frames": 55,
+      "different_frames": [],
+      "timing": {
+        "v75": {
+          "overlay": {
+            "frames": 55,
+            "tracked": 51,
+            "uvc_submitted": 55,
+            "processing_fps_fixture_decode_excluded": 3.65,
+            "median_lcd_ms_after_input_ready": 154,
+            "p95_lcd_ms_after_input_ready": 174,
+            "eye_stage_median_ms": 42,
+            "minimum_sampled_heap_bytes": [
+              278576,
+              139767,
+              31744
+            ]
+          }
+        },
+        "v76": {
+          "overlay": {
+            "frames": 55,
+            "tracked": 51,
+            "uvc_submitted": 55,
+            "processing_fps_fixture_decode_excluded": 3.66,
+            "median_lcd_ms_after_input_ready": 154,
+            "p95_lcd_ms_after_input_ready": 175,
+            "eye_stage_median_ms": 42,
+            "minimum_sampled_heap_bytes": [
+              278432,
+              139767,
+              31744
+            ]
+          }
+        }
+      },
+      "v75": {
+        "ready": {
+          "frames": 8,
+          "on_screen_closed_counts_image_lr": [
+            6,
+            6
+          ],
+          "right_held_closed_frames": [
+            32,
+            33,
+            34,
+            35,
+            36,
+            37
+          ],
+          "first_confirmed_change": [
+            2,
+            [
+              1.0,
+              1.0
+            ]
+          ]
+        },
+        "occluded": {
+          "frames": 10,
+          "on_screen_closed_counts_image_lr": [
+            10,
+            10
+          ],
+          "right_held_closed_frames": [
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47
+          ],
+          "first_confirmed_change": null
+        },
+        "visible": {
+          "frames": 8,
+          "on_screen_closed_counts_image_lr": [
+            8,
+            8
+          ],
+          "right_held_closed_frames": [
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55
+          ],
+          "first_confirmed_change": null
+        },
+        "eye_steps_shown": {
+          "open-before": 1,
+          "closed": 3,
+          "reopen": 3
+        }
+      },
+      "v76": {
+        "ready": {
+          "frames": 8,
+          "on_screen_closed_counts_image_lr": [
+            6,
+            6
+          ],
+          "right_held_closed_frames": [
+            32,
+            33,
+            34,
+            35,
+            36,
+            37
+          ],
+          "first_confirmed_change": [
+            2,
+            [
+              1.0,
+              1.0
+            ]
+          ]
+        },
+        "occluded": {
+          "frames": 10,
+          "on_screen_closed_counts_image_lr": [
+            10,
+            3
+          ],
+          "right_held_closed_frames": [
+            38,
+            39,
+            40
+          ],
+          "first_confirmed_change": [
+            3,
+            [
+              1.0,
+              0.0
+            ]
+          ]
+        },
+        "visible": {
+          "frames": 8,
+          "on_screen_closed_counts_image_lr": [
+            8,
+            6
+          ],
+          "right_held_closed_frames": [
+            50,
+            51,
+            52,
+            53,
+            54,
+            55
+          ],
+          "first_confirmed_change": [
+            2,
+            [
+              1.0,
+              1.0
+            ]
+          ]
+        },
+        "eye_steps_shown": {
+          "open-before": 1,
+          "closed": 3,
+          "reopen": 3
+        }
+      }
+    }
+  },
+  "deployed": {
+    "firmware_version": "2026.11.14",
+    "verified_runtime_hashes": 12,
+    "lcd_cat_capture": true,
+    "cold_start_uvc_frames_decoded": 32
+  }
+}

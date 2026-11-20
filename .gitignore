@@ -3,3 +3,6 @@ build/
 models/lips/*.espdl
 models/lips/*.onnx
 *.mjpeg
+
+# Supply these authorized live models locally.
+/runtime/v77/models/**/*.espdl

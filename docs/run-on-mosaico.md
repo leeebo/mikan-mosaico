@@ -1,5 +1,7 @@
 # Run Mikan on Mosaico
 
+> Historical v59 material. For the current source snapshot see [v77 setup](run-v77.md) and [current status](current-v77.md).
+
 The reference device is an **ESP32-S31 Mosaico** running stock **ESP-VISION 2026.11.14**. Use the Device CLI bundled with your installed ESP-VISION plugin. Set the shell variables `CLI` to the installed `cli/device-cli.mjs` path and `PORT` to your board's serial port. Run these commands from the root of the Mikan checkout. [ESP-VISION project](https://github.com/espressif/esp-vision)
 
 ```sh

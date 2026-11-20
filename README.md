@@ -1,19 +1,41 @@
 # Mikan · a cat avatar camera for Mosaico
 
 [![Powered by ESP-VISION](https://img.shields.io/badge/Powered%20by-ESP--VISION-b71927?style=flat-square)](https://github.com/espressif/esp-vision)
-[![Board: ESP32-S31 Mosaico](https://img.shields.io/badge/Board-ESP32--S31%20Mosaico-214761?style=flat-square)](docs/run-on-mosaico.md)
+[![Board: ESP32-S31 Mosaico](https://img.shields.io/badge/Board-ESP32--S31%20Mosaico-214761?style=flat-square)](docs/run-v77.md)
 [简体中文](README.zh-CN.md)
 
-Mikan is a ginger cat that turns with your head, opens its mouth when you do, and can close either eye independently. Camera capture, face tracking, expression inference, compositing, and display all run on the ESP32-S31 Mosaico. Live use starts without personal calibration.
+Mikan follows your head turn, mouth opening and independent eyelids as a ginger cat. Capture, tracking, expression inference, composition and display run entirely on ESP32-S31 Mosaico with stock ESP-VISION 2026.11.14. Live use requires no personal calibration.
 
-<p align="center">
-  <img src="media/mikan-live-uvc.png" width="440" alt="Real Mosaico UVC frame showing a centered ginger cat avatar with green eyes on a black background">
-  <br><em>Live USB capture from the board in centered mode.</em>
-</p>
+<p align="center"><img src="media/v77-lcd.jpg" width="400" alt="Actual v77 Mosaico LCD frame showing the centered ginger cat"><br><em>Current v77 board display, captured after restoring the application.</em></p>
 
-## Two views, one character
+## Current development: v77
 
-The app starts with Mikan centered on a black background. A short press of the **AI** button switches to a camera overlay that follows the face. Yaw, pitch, mouth opening, and independent eyelids work in both views. The same composed frame feeds the LCD and the optional USB webcam. Centered mode uses a 320 × 320 canvas drawn 1:1 on the LCD, with a 320 × 240 MJPEG presentation for UVC.
+The app starts with a centered cat. Short-press **AI** for the face-following camera overlay; hold it for the landmark page. Both modes share the single rig and mouth/eye controls, and feed the LCD and optional UVC webcam. Pitch and eyebrow effects are disabled in this version.
+
+```mermaid
+flowchart LR
+  Camera["Color QVGA camera"] --> Track["PFLD every frame · stable face crop"]
+  Camera --> Detect["YuNet · acquisition / recovery"]
+  Detect --> Track
+  Track --> Mouth["20 lip points · continuous mouth"]
+  Track --> Patches["Two 48 × 32 eye crops"]
+  Patches --> Eyes["Shared spatial model · independent 2-of-3 votes"]
+  Mouth --> Rig["Single cat rig and yaw atlas"]
+  Eyes --> Rig
+  Rig --> Frame["Composed RGB565 frame"]
+  Frame --> LCD["LCD"]
+  Frame --> UVC["UVC · MJPEG"]
+```
+
+The runtime prioritizes current-frame mouth submission and normally computes eye updates afterwards. One unreliable eye can expire independently while a strongly supported face and mouth keep tracking. [Current architecture, measurements and limitations](docs/current-v77.md)
+
+The first new mouth diagnosis ran **117 board inferences** on 13 public images and compared **19 exact native RGB565 inputs** with FP32. A wide opening measured 21.3 source pixels manually, 11.9 on the board and 11.8 in FP32 despite the lower lip remaining in frame. The batch contains one public subject and is not a multi-person accuracy benchmark. Mouth-point bias, glasses errors and near-view loss remain open. [Report](docs/mouth-validation-round1.md) · [Next experiments](docs/validation-next.md)
+
+## Run it
+
+- **Current v77 live source:** [setup and exact manifest](docs/run-v77.md). YuNet is bundled; compatible, authorized PFLD and custom eyelid weights must be supplied separately. This is a source snapshot, not a complete ready-to-run live package. [Model contracts](runtime/v77/models/README.md)
+- **Rendering demo:** [scripted pose replay](docs/run-on-mosaico.md#play-the-model-free-demo), using the preserved v59 renderer. It demonstrates board rendering without inference models; it does not track camera expressions.
+- **Historical v59 live implementation:** root-level `app.py` and `runtime-manifest.json`. [Legacy setup](docs/run-on-mosaico.md#run-the-live-camera) · [Legacy performance](docs/measurements.md)
 
 ## How the cat turns
 
@@ -39,18 +61,10 @@ flowchart LR
   Frame --> UVC["USB webcam · MJPEG"]
 ```
 
-## Measured on Mosaico
+## Measurements and provenance
 
-| Same input, UVC on | v58 FPS | v59 FPS | v59 minimum Python free heap | v59 minimum largest IDF free block |
-| --- | ---: | ---: | ---: | ---: |
-| Centered | 3.79 | 3.13 | 144,400 B | 56,320 B |
-| Camera overlay | 3.63 | 2.97 | 144,384 B | 31,744 B |
+The latest complete paired performance run before v77 measured v76 at 6.33 FPS centered and 3.85 FPS overlay with UVC enabled. Centered static replay benefits from composition reuse; timings exclude fixture unpacking and camera acquisition. These are not a new v77 live-camera benchmark. [Context and memory results](docs/current-v77.md#measurements-and-limits)
 
-For the scripted turn, the P95 mean RGB difference between adjacent avatar crops fell from **26.65 to 7.49**. Finer angle sampling costs texture decoding time. These are application frame rates with an active UVC client. The turn replay checks rendering with known landmarks. It does not measure pose accuracy during fast human motion. [Measurement details](docs/measurements.md)
+The public branch preserves its separate publication history and includes selected source, character artwork and numerical evidence. Personal captures, public-dataset image crops and experimental caches are omitted. [Third-party notices](THIRD_PARTY_NOTICES.md)
 
-## Run it
-
-- **Model-free pose replay.** Run the board-rendered animation over LCD and USB using three bundled files and scripted landmarks. [Quick start](docs/run-on-mosaico.md#play-the-model-free-demo)
-- **Live expression tracking.** The runtime includes the YuNet and eye models. Supply a compatible, authorized PFLD lip model separately. [Live setup](docs/run-on-mosaico.md#run-the-live-camera) · [Third-party notices](THIRD_PARTY_NOTICES.md)
-
-Powered by [ESP-VISION](https://github.com/espressif/esp-vision). Mikan is a standalone application built on the stock 2026.11.14 firmware.
+Powered by [ESP-VISION](https://github.com/espressif/esp-vision).

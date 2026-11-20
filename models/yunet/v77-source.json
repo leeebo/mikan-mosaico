@@ -1,0 +1,15 @@
+{
+  "upstream": {
+    "repository": "https://github.com/opencv/opencv_zoo",
+    "commit": "48b10fa505aeb51fbd127fc60a5c660040e823b7",
+    "path": "models/face_detection_yunet/face_detection_yunet_2023mar.onnx",
+    "sha256": "8f2383e4dd3cfbb4553ea8718107fc0423210dc964f9f4280604804ed2552fa4",
+    "bytes": 232589,
+    "license": "MIT"
+  },
+  "runtime_file": "yunet-near-w8a8.espdl",
+  "runtime_bytes": 152384,
+  "runtime_sha256": "89c9fea9b8ac9b840257ffd22105e07937bd8b73dac24b01add51fcca95980b7",
+  "purpose": "v77 initial acquisition and recovery; distinct from the legacy 160x160 export",
+  "license": "MIT; see LICENSE"
+}

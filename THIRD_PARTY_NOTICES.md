@@ -5,4 +5,11 @@
 - **PFLD.** The live mouth path uses a 20-point lip subset from a 106-point pretrained PFLD model. Redistribution rights for those pretrained weights have not been established, so the export is omitted. The runtime contract and source provenance are provided. [Model details](models/lips/source.json)
 - **ESP-VISION.** The application runs on Espressif's firmware and uses its device APIs and ESP-DL runtime. Obtain these separately from Espressif. [ESP-VISION](https://github.com/espressif/esp-vision)
 
+## Current v77 additions
+
+- **Near-range YuNet export.** The additional 152,384-byte export is covered by the same upstream MIT notice. [v77 source record](models/yunet/v77-source.json)
+- **PFLD 36-point/presence export.** Its tested interface and hashes are published, but its weights are omitted for the same unresolved pretrained-weight redistribution scope. [Current contracts](runtime/v77/models/README.md)
+- **Custom spatial eyelid model.** The v77 eye path replaces the legacy OMZ classifier. Runtime code and numerical results are included; its public-data training corpus and custom weights are omitted pending separate provenance and redistribution review. No permission to redistribute those omitted materials is asserted.
+- **Public-dataset evaluation.** Numerical summaries identify their source and scope. Dataset portraits, RGB565 eye/face patches and personal captures are not bundled.
+
 The listed third-party licenses apply to their respective components. This repository does not declare a project-wide license.

@@ -1,5 +1,7 @@
 # v57–v59 test notes
 
+> Historical v59 material. For the current source snapshot see [v77 setup](run-v77.md) and [current status](current-v77.md).
+
 - v57 enabled UVC alongside the LCD from one composed frame. The published USB image is 320 × 240 MJPEG. Centered mode composes at 320 × 320 and writes directly to the LCD.
 - v58 repaired the ear root to cheek contour at intermediate yaw. [Board captures](../media/ear-rim-ab.png)
 - v59 replaced the five head views with 33 samples at 2° intervals, stored as 17 blocks with mirroring. The rig pack grew from 80,259 B to 118,757 B. The indexed textures went from 208 × 208 to 124 × 124 to fit device storage. This trades some static sharpness for smoother changes in angle.
