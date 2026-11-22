@@ -4,6 +4,8 @@
 [![Board: ESP32-S31 Mosaico](https://img.shields.io/badge/Board-ESP32--S31%20Mosaico-214761?style=flat-square)](docs/run-v77.md)
 [简体中文](README.zh-CN.md)
 
+[Project handoff · current progress, open challenges and next steps](HANDOFF.md)
+
 Mikan follows your head turn, mouth opening and independent eyelids as a ginger cat. Capture, tracking, expression inference, composition and display run entirely on ESP32-S31 Mosaico with stock ESP-VISION 2026.11.14. Live use requires no personal calibration.
 
 <p align="center"><img src="media/v77-lcd.jpg" width="400" alt="Actual v77 Mosaico LCD frame showing the centered ginger cat"><br><em>Current v77 board display, captured after restoring the application.</em></p>

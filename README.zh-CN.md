@@ -3,6 +3,8 @@
 [![Powered by ESP-VISION](https://img.shields.io/badge/Powered%20by-ESP--VISION-b71927?style=flat-square)](https://github.com/espressif/esp-vision)
 [English](README.md)
 
+[项目交接 · 当前进展、剩余挑战与下一步](HANDOFF.md)
+
 采集、跟踪、推理、单骨架小猫合成与显示全部在 ESP32-S31 Mosaico 上运行，使用官方 ESP-VISION 2026.11.14，无需个人校准。
 
 ![当前 v77 板上 LCD 实际画面](media/v77-lcd.jpg)
