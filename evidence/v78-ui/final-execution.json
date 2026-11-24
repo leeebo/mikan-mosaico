@@ -1,0 +1,14 @@
+{
+  "completed_observations": 260,
+  "runs": [
+    {
+      "name": "v78-final-stable",
+      "frames": 114
+    },
+    {
+      "name": "v78-final-guards",
+      "frames": 146
+    }
+  ],
+  "note": "Final candidate is two bounded runs, not one continuous 260-frame run. Each run has its original input hashes and source logs; displayed comparison frame numbers are normalized to baseline sample order. Baseline was one 260-frame run. Both groups begin with tracker reset; diagnostics individually reset."
+}

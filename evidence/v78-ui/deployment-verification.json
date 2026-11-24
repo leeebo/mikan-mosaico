@@ -1,0 +1,87 @@
+{
+  "files": [
+    [
+      "/flash/mikan-v78-ui/pfld_app.py",
+      18584,
+      "29d7b315aa82b3c0c9214e359aa1ad27a9e33447ad6013ff28c330b838cb6aab"
+    ],
+    [
+      "/flash/mikan-v78-ui/pfld_tracking.py",
+      32817,
+      "810d04fe66307f438658328747729d29bdc26ce6023ff47f580dcdf97b602a80"
+    ],
+    [
+      "/flash/mikan-v78-ui/screen_ui.py",
+      8009,
+      "d43c9dd34ffe659735206a844d1f2fc00a01a75ccf329f2ac55099f74753d53e"
+    ],
+    [
+      "/flash/mikan-v78-ui/start.py",
+      568,
+      "62dba0667a348073a026f52f301d27af62df622336ba7cafb744ae2eaa0bcca9"
+    ],
+    [
+      "/flash/mikan-v78-ui/mikan-ui.pack",
+      77113,
+      "904f5847925e375a5821a747de2d4d131eb1993183187f8f4996d4778628cf24"
+    ],
+    [
+      "/flash/mikan-v60/kitten_rig.py",
+      21531,
+      "2a5c495d72ced3ace8281bb5700542e3fe89b7a4bf4323ad90ec1b2c50ef523c"
+    ],
+    [
+      "/flash/mikan-v60/mouth_geometry.py",
+      6647,
+      "b3fbf5f7d0657a8cdc1ee02888f4763c210e4afdecb49df55e25d344442f6446"
+    ],
+    [
+      "/flash/mikan-v60/eyelid_contours.py",
+      9844,
+      "0d2f4502a2ac191a58dc4ccc59c88dc7e9bf91e1012461bb36203c219bb4fc2d"
+    ],
+    [
+      "/flash/mikan-v60/face_landmarks.py",
+      3746,
+      "bd83105fde82c0f82708db375ba1eb09eea752d8f1c3868fdb8e82d4524b9272"
+    ],
+    [
+      "/flash/mikan-v60/pfld-36-presence.espdl",
+      334672,
+      "985b5a62445c9b68f6b6d00b148a592a0caa4826c0624fecdd7edaffa9419923"
+    ],
+    [
+      "/flash/mikan-v60/eyelid-contour-s31.espdl",
+      25504,
+      "ea2579e3f46c174b158bcffaaaf50a4d31d61bec9e28c2f883ec1e1241c41055"
+    ],
+    [
+      "/flash/memoji-camera/yunet-near-w8a8.espdl",
+      152384,
+      "89c9fea9b8ac9b840257ffd22105e07937bd8b73dac24b01add51fcca95980b7"
+    ],
+    [
+      "/flash/memoji-camera/kitten-rig.pack",
+      118757,
+      "6d73753ebd4bd67be3f25f60e1668da45145f8b30a58f8960c868af319ebefee"
+    ],
+    [
+      "/flash/memoji-camera/kitten-rig.json",
+      1286,
+      "c09f3fabcb319c6b51a2f05131ff24fcb5ccf797ce97d58a51dd085b939dc153"
+    ],
+    [
+      "/flash/memoji-camera/uvc-warmup.jpg",
+      1827,
+      "50fed45ee36d53beff1745b6f698c3475e99dc20cd86f8d0ccc17e9e63a262d7"
+    ]
+  ],
+  "assets_rgb_sha_checks": 8,
+  "startup_jpeg_sha_checks": 3,
+  "guidance_state_selftest": "passed",
+  "view_key_function_selftest": "passed",
+  "physical_key_new_acceptance": "not repeated; handler unchanged",
+  "firmware": "2026.11.14",
+  "candidate_root": "/flash/mikan-v78-ui",
+  "original_v77_preserved": true
+}

@@ -1,0 +1,70 @@
+{
+  "count": 12,
+  "frames": 260,
+  "width": 240,
+  "height": 320,
+  "format": "RGB565 LE, fixed source per frame; 1 KiB zlib window",
+  "sha256": "cae7d34cf947b7dccef6d2c55af062d2626ce56136a8c90929f9b165ffc237a6",
+  "inputs": [
+    {
+      "key": 0,
+      "source": "v74/graded:0",
+      "rgb565_sha256": "dc78286d7beb481962f148d7ce80ec91d5efabaa004bfeeea42b4ab70fdc6203"
+    },
+    {
+      "key": 1,
+      "source": "v74/graded:1",
+      "rgb565_sha256": "3a246773f006f8c850324177eeb3442b6ed7015c7f599d3dd53ead377adfdfd7"
+    },
+    {
+      "key": 2,
+      "source": "v74/graded:2",
+      "rgb565_sha256": "1d00475217858bc662248d4b57f073c0c6d3f002471a7b4ab89158232a7f9317"
+    },
+    {
+      "key": 3,
+      "source": "v74/graded:3",
+      "rgb565_sha256": "174e4d54a1dc7ef719e9a2cf9a2d1f52ac49815cc901e9f9e35f1b46c2b3e0c7"
+    },
+    {
+      "key": 4,
+      "source": "v74/glasses:0",
+      "rgb565_sha256": "3b1b0ad6be24fc3a88bbe9c060c76b6a04361dab2dd46ed1d5aff6dbf74b3bdc"
+    },
+    {
+      "key": 5,
+      "source": "v74/glasses:1",
+      "rgb565_sha256": "1f916a3f5ee001da1bdacb8a0f5fdc45d73beec86873a340f86314b851ce544f"
+    },
+    {
+      "key": 6,
+      "source": "v74/wink:0",
+      "rgb565_sha256": "72246c85f0e877ed40955243fff64868ea0d64e975c27355451ae6f3cd9dbf69"
+    },
+    {
+      "key": 7,
+      "source": "v77-joint/extended:0",
+      "rgb565_sha256": "89eaa92be3901cdee2bbae1e932aa53809def05ef9657fc1e2daa98d4aa75740"
+    },
+    {
+      "key": 8,
+      "source": "v77-joint/extended:1",
+      "rgb565_sha256": "cd558a79a35c4d9cf183c68c7f7439baf43499e1f7a8b118cca43c39a62be97c"
+    },
+    {
+      "key": 9,
+      "source": "v77-joint/extended:2",
+      "rgb565_sha256": "c898e3410568c006ab7fb3669f61f579ba95e6b289dc8392c00dee57a1d540ee"
+    },
+    {
+      "key": 10,
+      "source": "v77-joint/extended:3",
+      "rgb565_sha256": "36c8ca287f2301a998d8cb376b5eacc412ef66c8314f57b4db8edb9ca7b48a3e"
+    },
+    {
+      "key": 11,
+      "source": "v78-near-diagnosis/3969-140 JPEG decoded offline to fixed RGB565",
+      "rgb565_sha256": "c32e96c78219203ef778e0cefae8ae0be79fa04c9f16a4d30d0b3570b6602a0d"
+    }
+  ]
+}

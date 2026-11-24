@@ -1,0 +1,82 @@
+{
+  "bytes": 77113,
+  "sha256": "904f5847925e375a5821a747de2d4d131eb1993183187f8f4996d4778628cf24",
+  "brand_group_scale": 1.2,
+  "canvas": [
+    480,
+    480
+  ],
+  "sprites": {
+    "logo0": [
+      152,
+      96,
+      176,
+      176,
+      0,
+      24731
+    ],
+    "brand": [
+      126,
+      276,
+      228,
+      112,
+      24731,
+      7924
+    ],
+    "eyes0": [
+      184,
+      170,
+      112,
+      40,
+      32655,
+      5697
+    ],
+    "eyes1": [
+      184,
+      170,
+      112,
+      40,
+      38352,
+      3938
+    ],
+    "mouth0": [
+      216,
+      212,
+      50,
+      40,
+      42290,
+      1528
+    ],
+    "mouth1": [
+      216,
+      212,
+      50,
+      40,
+      43818,
+      2058
+    ],
+    "seek": [
+      12,
+      408,
+      456,
+      64,
+      45876,
+      6365
+    ],
+    "bounds": [
+      12,
+      408,
+      456,
+      64,
+      52241,
+      6113
+    ]
+  },
+  "format": "RGB565 little endian; independent zlib streams, 1 KiB windows",
+  "models": 0,
+  "startup_notification": false,
+  "animation_patch_pixel_bytes": 25920,
+  "startup_uvc": "preencoded 320x240 JPEG; no startup RGB full-frame buffer",
+  "startup_brand_composite_pixel_bytes": 133152,
+  "startup_uvc_jpeg_bytes": 18368
+}

@@ -1,0 +1,18 @@
+{
+  "decoded_uvc_frames": 33,
+  "byte_identical_boot_frames_by_pose_neutral_blink_mouth": [
+    10,
+    1,
+    3
+  ],
+  "non_boot_frames": 19,
+  "runtime_guidance_frames": 3,
+  "all_sizes": [
+    320,
+    240
+  ],
+  "pack_sha256": "904f5847925e375a5821a747de2d4d131eb1993183187f8f4996d4778628cf24",
+  "runtime_neutral_cat_frames": 7,
+  "source_run": "live12",
+  "classification": "Three startup frames byte-matched; neutral and guidance unique frames manually inspected; fallback excluded"
+}

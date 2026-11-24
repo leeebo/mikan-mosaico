@@ -13,3 +13,8 @@
 - **Public-dataset evaluation.** Numerical summaries identify their source and scope. Dataset portraits, RGB565 eye/face patches and personal captures are not bundled.
 
 The listed third-party licenses apply to their respective components. This repository does not declare a project-wide license.
+
+
+## v78 startup artwork
+
+The brand pack contains project-created cat logo artwork and a raster Mikan wordmark selected during the design review. Startup poses are pre-rendered eye/mouth patches; they are not camera captures or new inference models. Source artwork and the offline pack builder are included under assets/brand and tools/bake_brand_ui.py. The PFLD and custom spatial-eyelid weights remain externally supplied under the existing model-contract policy.

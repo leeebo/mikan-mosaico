@@ -1,36 +1,60 @@
-# Mikan · Mosaico 单机小猫相机
+# Mikan · Mosaico 单机小猫拟我相机
 
-[![Powered by ESP-VISION](https://img.shields.io/badge/Powered%20by-ESP--VISION-b71927?style=flat-square)](https://github.com/espressif/esp-vision)
-[English](README.md)
+**Powered by [ESP-VISION](https://github.com/espressif/esp-vision)** · [English](README.md)
 
-[项目交接 · 当前进展、剩余挑战与下一步](HANDOFF.md)
+让小猫跟随你的嘴型、左右眼开闭和转头。相机、模型推理、单骨架贴图、LCD与USB UVC输出全部在 **ESP32-S31 Mosaico** 上运行；固件为 **ESP-VISION 2026.11.14**，无需个人校准。
 
-采集、跟踪、推理、单骨架小猫合成与显示全部在 ESP32-S31 Mosaico 上运行，使用官方 ESP-VISION 2026.11.14，无需个人校准。
+当前公开源代码快照为 **v78**，实机证据日期为2026-11-23。新增品牌启动动画与底部取景引导，表情算法沿用v77。**实时运行仍需自行供应兼容且有授权的PFLD和空间眼睑权重，公开包不是完整开箱即用的模型包。** [模型接口与供应范围](runtime/v78/models/README.md)
 
-![当前 v77 板上 LCD 实际画面](media/v77-lcd.jpg)
+| Mikan启动页 | 运行中的取景提示 |
+| :---: | :---: |
+| <img src="evidence/v78-ui/startup-lcd.jpg" width="240" alt="Mikan原生LCD启动页"> | <img src="evidence/v78-ui/runtime-lcd-guidance.jpg" width="240" alt="原生LCD猫头与取景通知"> |
 
-## 当前版本 v77
+以上为原生480×480 LCD截图。失跟引导页存在缩放，通知文字发虚仍待改进；正常跟随保留原320画布的像素比例。
 
-默认居中显示猫头，短按 **AI** 切换相机叠加，长按进入关键点页。两种模式保留嘴和左右眼跟随，LCD 与 UVC 共用合成结果。本版关闭抬头低头和眉毛效果。
+[上板与运行](docs/run-v78.md) · [实现与验证](docs/v78-startup-and-guidance.md) · [交接与待办](HANDOFF.md) · [文档索引](docs/README.md)
 
-YuNet 在首次入镜或需要重捕时确定框位，稳定时每帧 PFLD 跟踪，20 个唇点驱动连续开度。左右眼裁成 48×32 小图，复用一个空间眼睑模型，各自最近三次有效观测中任意两次一致才更新。当前嘴型优先提交，眼部推理通常随后进行。单侧眼图暂时失效时，有充分支持的嘴和另一侧可继续跟随。[当前架构与限制](docs/current-v77.md)
+## 功能与操作
 
-最新嘴部排查完成 13 张公开图、117 次板上推理、19 份实际 RGB565 输入的浮点对照。大张嘴的人工间隙 21.3 像素，板上预测 11.9，浮点预测 11.8，下唇仍在输入内。模型唇点偏差尚未解决；换分母或统一移框没有形成可上线的修复。这批来自一个公开人物，不能代表多人准确率。[完整报告](docs/mouth-validation-round1.md) · [后续验证](docs/validation-next.md)
+- 默认居中猫头，短按AI键切换相机叠加跟随。两种模式共用同一套嘴眼测量与骨架。
+- 嘴部连续开度优先随当前帧提交；左右眼独立，以最近三个有效观测中的任意两次一致确认。
+- 按住AI键至少650ms切换关键点页；关键点页短按退出。
+- 品牌页使用紧凑底图、预制眨眼／张嘴贴片与预编码UVC画面，不增加推理模型。
+- 运行通知只依据当前观测提示“请正对镜头”或“请调整位置”，不将未检出直接解释为无人、半脸或太近。
 
-## 运行与复现范围
+眉毛与抬头低头效果关闭。启动动画属于Mikan应用启动阶段；v78保留设备原main.py，没有配置断电自动进入应用。
 
-- [v77 源码及上板方法](docs/run-v77.md)保留实测版本的源码和清单。YuNet 已附带，PFLD 和自研眼睑模型权重需另行提供兼容且具备授权的文件；公开版不是开箱即用的完整实时模型包。[模型接口](runtime/v77/models/README.md)
-- [无推理模型的板上渲染演示](docs/run-on-mosaico.md#play-the-model-free-demo)沿用 v59，通过预设关键点播放转头和口眼动作，不识别相机中的人脸。
-- 根目录 `app.py` 和 `runtime-manifest.json` 保留历史 v59 实现。[历史测量](docs/measurements.md)
+## 当前架构
 
-最近一次完整配对性能测试是 v76 的受控回放，居中 6.33 FPS、叠加 3.85 FPS，UVC 开启。居中重复静态画面受益于合成复用；计时不含相机采样，不视为新一轮 v77 真人性能。叠加 Python 最低空闲 277,376 B，IDF 最低总空闲／最大连续块 139,767／31,744 B。[数值与范围](docs/current-v77.md#measurements-and-limits)
+彩色QVGA → YuNet按需捕获／重捕 → PFLD逐帧跟踪 → 20唇点的连续开度 + 原图裁双眼并复用局部眼睑模型 → 单骨架与角度贴图 → LCD/UVC。
 
-近距离仍可能被跟踪安全余量和重捕门槛拦住，戴镜眼态、大张低估和抿嘴误开仍待修复。本次公开更新包含筛选后的源码、美术和数值汇总，未包含人脸原图、个人录像或实验缓存。
+普通模式先提交当前嘴型，再执行调度的眼部推理。猫头以深度投影和偏航贴图实现2.5D体积效果，并非完整实时三维网格。[算法与调度](docs/current-v77.md)
 
-## 历史渲染优化
+## 实测范围
 
-![同一段板上转头，左 v58，右 v59](media/yaw-ab.gif)
+旧版一段260帧；最终v78分为114帧表情／关键点和146帧保护／引导，每段前硬复位，UVC开启。
 
-单骨架与离线深度投影贴图沿用此前方案。更密的角度采样改善转头换档，历史 93 帧脚本回放中的相邻画面差值 P95 从 26.65 降到 7.49。[静帧](media/yaw-ab-keyframes.png) · [耳根修复](media/ear-rim-ab.png)
+| 受控回放指标 | v77 | v78 |
+| --- | ---: | ---: |
+| 居中处理帧率 | 6.308FPS | 6.300FPS |
+| 叠加处理帧率 | 3.891FPS | 3.954FPS |
+| 最低Python空闲 | 172,896B | 417,056B |
+| 最低IDF空闲 | 139,771B | 238,979B |
+| 最大连续IDF块的最低值 | 31,744B | 100,352B |
+| UVC提交成功 | 258/260 | 260/260 |
 
-Powered by [ESP-VISION](https://github.com/espressif/esp-vision)。[第三方说明](THIRD_PARTY_NOTICES.md)
+114帧表情／关键点输出与v77一致；双方均在跟踪的132帧测量也一致。恢复阶段有13帧状态差异，受真实时间检测冷却影响，不能宣称整段逐帧一致。一次长回归在205帧被宿主终止，不计为连续260帧通过。
+
+帧率扣除了夹具解码和人为等待；静态居中图受益于缓存。这不是新的真人帧率、准确率或光学延迟保证。Python与IDF统计不能相加。[完整口径](docs/v78-startup-and-guidance.md) · [数值和截图](evidence/v78-ui/README.md)
+
+## 下一步与历史演示
+
+通知清晰度、大张嘴低估、抿嘴误开、眼镜和近景失效仍待解决；UI更新没有消除这些模型限制。[项目交接](HANDOFF.md) · [嘴部同输入验证](docs/mouth-validation-round1.md) · [算法验证规划](docs/validation-next.md)
+
+保留[历史转头对比](media/yaw-ab.gif)和[轮廓修复对比](media/ear-rim-ab.png)。[不依赖推理模型的历史回放](docs/run-on-mosaico.md#play-the-model-free-demo)使用预设关键点，仅验证板上绘制，不识别真人表情。
+
+## 文件与发布范围
+
+当前源码在 `runtime/v78/`，[清单](runtime/v78/runtime-manifest.json)列出15项依赖、路径与SHA256。代码逐字节来自已验证的本地检查点 `e7feab2`；公开仓库维护独立发布历史。根目录 `app.py` 和 `runtime-manifest.json` 属于历史v59，v77回滚和原演示也保留。
+
+原始人脸、数据集裁图、设备日志和实验缓存未发布，PFLD与自研眼睑权重按原约定外供。[第三方说明](THIRD_PARTY_NOTICES.md)
