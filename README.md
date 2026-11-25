@@ -1,59 +1,122 @@
-# Mikan · a private USB cat camera for Mosaico
+# Mikan · a private USB cat camera
 
 [![Powered by ESP-VISION](https://img.shields.io/badge/Powered%20by-ESP--VISION-b71927?style=flat-square)](https://github.com/espressif/esp-vision)
 [简体中文](README.zh-CN.md)
 
-Mikan starts with a ginger cat instead of showing the person and room. Capture, inference, rendering, LCD and USB UVC run on **ESP32-S31 Mosaico**, using official **ESP-VISION 2026.11.14**, without personal calibration.
+**Let a cat take your place on camera.** Mikan is a USB camera application for ESP32-S31 Mosaico. A ginger cat follows your mouth, eyelids and left/right head turns. One button switches between the private cat view, a cat over the camera background, and the original camera image.
 
-The current public source candidate is **v80**, published 2026-11-25 with board evidence from 2026-11-24. It removes coupled eye rules and adds a RAW path without inference or overlays. **Startup/camera allocation and USB disconnect failures remain unresolved. Compatible authorized PFLD and custom eyelid weights must be supplied separately. This is not a complete ready-to-run model bundle or a fully accepted stable release.** [Model contracts](runtime/v80/models/README.md)
+Capture, expression inference and rendering run on the board. The computer receives USB UVC video without running face tracking or avatar software. No personal calibration is required.
 
-[Setup](docs/run-v80.md) · [18-file manifest](runtime/v80/runtime-manifest.json) · [Implementation and evidence](docs/v80-direct-and-raw.md) · [Handoff](HANDOFF.md) · [Documentation](docs/README.md)
+<p align="center">
+  <img src="evidence/v78-ui/startup-lcd.jpg" width="280" alt="Mikan cat and startup branding on the Mosaico display">
+</p>
 
-## Controls and output
+<p align="center"><em>Actual Mosaico startup display, captured for v78. The current application reuses the same brand artwork.</em></p>
+
+[Get started](docs/run-v80.md) · [Architecture](#architecture) · [Documentation](#documentation) · [Project status](#project-status)
+
+## Product features
+
+| Feature | What it does |
+| --- | --- |
+| Private default view | The application starts with a cat on black instead of the person and room |
+| Mouth and eyelids | Continuous mouth opening and independent left/right eye states drive the character |
+| Head motion | The cat turns left and right; in overlay mode it follows face position and scale |
+| Three video modes | Cat, camera overlay and RAW, selected with the AI button |
+| Display and USB video | The board LCD shows the current view while UVC supplies video to the computer |
+| Framing guidance | Sustained tracking loss shows positioning guidance; unreliable overlay tracking falls back to the private cat |
+| Local processing | The application performs inference and rendering on-device without adding recordings or network transmission |
+| Animated startup | Preset blinks and mouth poses introduce Mikan before live expression control |
+
+### Video modes
+
+| Mode | Picture and behavior | When to use it |
+| --- | --- | --- |
+| **Cat**, default | Ginger cat on black, following mouth, eyelids and head turns; no person or room in the output | Express yourself through the character |
+| **Overlay** | Cat head follows the face over the camera background, with a LIVE label; tracking loss temporarily returns to cat | Keep the surroundings in view with a cat avatar |
+| **RAW** | Camera image without cat, labels or framing guidance; expression inference is skipped | Use the camera directly or check its framing |
+
+Cat mode still captures images locally for inference; it does not switch off the sensor. Overlay keeps the background visible and cannot guarantee complete face coverage. Live mode is not persisted. An observed host USB video stream transition returns the application to cat.
+
+### Controls
 
 | AI button | Action |
 | --- | --- |
-| Short press | Cat → camera overlay → RAW → cat |
-| Hold at least 650ms, then release | Return to cat |
+| Short press | Cat → overlay → RAW → cat |
+| Hold at least 650 ms, then release | Return to cat from any mode |
 
-Live mode is not persisted. An observed USB stream transition returns to cat; a reopen faster than the application observation interval is not guaranteed. Overlay tracking loss temporarily selects the private cat. RAW deliberately exposes the camera and does not depend on tracking. Cat mode still captures images locally for inference; it does not disable the sensor. An overlay is not a guarantee of anonymity. The application adds no recording or network transmission.
+Ordinary button use does not enter the landmark view. Diagnostic views require an explicit developer entry.
 
-Each eye independently maps the current valid gap `<= .096` to closed, otherwise open/neutral. There are no votes, coupled conditions, candidates or holds. Model mistakes therefore appear directly. The existing mouth-first, usually post-display eye scheduling remains. The firmware, weights, eye measurements and mouth geometry are unchanged from v78.
+## Architecture
 
-RAW writes the source directly to the LCD, skips tracking, expression inference, labels, guidance and scene composition, and only adapts dimensions for USB when required. Encoding and LCD transfer still cost time. The default shared pixel buffer returns to 204800 B, saving 152704 B from the larger experiment; notification text returns to the softer v78 scaled rendering.
+One board application handles capture, inference, character animation and output. Cat and overlay share the expression pipeline. RAW branches immediately after capture.
 
-## Verified scope and open failures
+```mermaid
+flowchart TD
+    Camera["Camera · color QVGA / RGB565"] --> Mode["Video mode selection"]
+    Mode -->|Cat / overlay| Track["YuNet acquisition and recovery<br/>PFLD tracking and landmarks"]
+    Track --> Mouth["20 lip landmarks<br/>Continuous mouth opening"]
+    Track --> Eyes["Two eye crops<br/>Shared eyelid model · independent states"]
+    Track --> Pose["Face position and left/right head turn"]
+    Mouth --> Rig["Single cat rig + yaw atlas"]
+    Eyes --> Rig
+    Pose --> Rig
+    Rig --> Compose["Cat on black / camera overlay"]
+    Mode -->|RAW| Raw["Direct video path<br/>Skip inference and scene composition"]
+    Compose --> LCD["Board LCD"]
+    Compose --> UVC["USB UVC · MJPEG"]
+    Raw --> LCD
+    Raw -->|Required size adaptation and encoding| UVC
+```
 
-| Check | Result |
+### Tracking and expressions
+
+| Stage | Implementation |
 | --- | --- |
-| Portable policy checks | 29 host and MicroPython checks passed |
-| v78/current-eye fixed-input comparison | 105 frames each; mouth, tracking, crop and raw eye measurements agree; direct mapping matches |
-| RAW fixed-input comparison | 120 observations each; 119 RAW frames preserve source pixels; steady median 116→81 ms, about 30% less |
-| Mode and control regressions | 84 mode/guard frames and 90 software-button/actual host UVC reconnect frames passed |
-| Physical sensor smoke test | 80 frames, UVC 80/80; 20 RAW frames median 129 ms; no valid face tracking |
-| Deployment identity | 18 original file byte counts and SHA256 verified |
+| Face acquisition | YuNet locates a face on entry, tracking loss or scale confirmation; steady tracking avoids full-image detection every frame |
+| Landmark tracking | PFLD uses a 112×112 face input and returns 36 points plus presence: 20 lip points and eight points per eye; it also updates the face crop |
+| Mouth opening | Inner-lip gaps normalized by mouth width drive continuous jaw and mouth motion, with current-mouth submission prioritized |
+| Eyelid states | Two 48×32 crops from the original frame share one spatial eyelid model for lid edges and visibility; each eye maps its current result directly, without bilateral rules or historical votes |
+| Position and pose | Face landmarks drive left/right turns and overlay placement; pitch and eyebrow effects are currently disabled |
 
-Fixed-input tests replace camera samples. Software buttons do not count as physical button acceptance. Controlled timing excludes fixture decoding/hashing/logging. The physical sensor smoke test uses a software mode sequence without replacing camera pixels. It does not establish facial accuracy or optical latency. Neither timing figure is delivered camera FPS. Negotiated USB is 320×240 MJPEG at 10 Hz.
+Eye patches are captured before composition. Ordinary eye inference runs after LCD/UVC submission and supplies a subsequent composition. Mouth submission therefore does not wait for that eye inference, while mouth and eyes can update at different times.
 
-A larger canvas disconnected USB in three model/video runs. Restoring the v78 buffer passed bounded checks, but after the successful physical sensor run a later production relaunch failed to allocate the camera DVP backup buffer and USB disconnected again. A requested hard reset and explicit main launch recovered the cat view. **The smaller buffer does not solve all startup/stability failures.** [Failure record](evidence/v80-direct/startup-stability.json) · [All measured scope](evidence/v80-direct/README.md)
+### Character and output
 
-Natural eye/mouth behavior, physical buttons, long-duration camera operation, resource peaks and complete physical power-cycle autostart remain unaccepted. Large-mouth underestimation, pressed-lip false opening, glasses and near-range recovery remain open. [Next work](HANDOFF.md)
+A single six-bone rig combines offline depth projection and a yaw atlas to create the cat's 2.5D turns. The board decodes the textures needed for the current view rather than running a complete real-time 3D mesh.
 
-## Source and deployment
+Cat mode draws the character on black. Overlay draws the same character over the camera image. LCD and UVC share the mode selection and character state, with separate size adaptation. RAW bypasses model inference, rig updates and scene composition, retaining LCD transfer and the necessary USB size conversion and encoding.
 
-Current modules are under `runtime/v80/`; the manifest includes 17 runtime dependencies and a separate candidate `main.py` entry. Source byte hashes match the recorded development checkpoint; only manifest paths and publication metadata differ. Upload each supplied or externally provisioned file to its explicit manifest device path, verify it, and start the independent v80 entry before considering main replacement. Root `app.py` and root `runtime-manifest.json` remain historical v59 entries.
+The reference configuration has a 480×480 LCD and 320×240 MJPEG UVC output, with color QVGA camera input. RAW preserves aspect ratio with black margins when the camera and output dimensions differ.
 
-The v78/v77 snapshots and model-free scripted rendering demo are preserved. The demo renders preset landmarks and does not recognize camera expressions. Public history is separate from local research history. Personal images, raw logs, dataset crops, experimental caches and the two external model weights are omitted. [Third-party notices](THIRD_PARTY_NOTICES.md)
+## Get started
 
-## How the cat turns
+The reference hardware is **ESP32-S31 Mosaico** running official **ESP-VISION 2026.11.14**. The computer is a UVC viewer; development and deployment use the installed ESP-VISION plugin and its bundled CLI.
 
-One six-bone rig drives the head, jaw, eyelids, muzzle, and nose. Artwork is projected offline onto an approximate depth surface. The v59 atlas samples yaw every 2° and stores only one side, with the opposite side mirrored around a shared frontal view. Each angle has one outer contour, and the jaw's position and lip line follow the current view. The board decodes only the current head and eyelids.
+1. Read the [deployment guide](docs/run-v80.md) and confirm board identity, firmware and device access.
+2. Prepare the source, artwork and models listed in the [runtime manifest](runtime/v80/runtime-manifest.json), checking byte counts and SHA-256 hashes.
+3. Upload files to their explicit device paths. Start the independent application entry and check the LCD and USB view before handling the startup entry as described in the guide.
 
-<p align="center">
-  <img src="media/yaw-ab.gif" width="490" alt="Synchronized turn from actual Mosaico output: five-angle v58 on the left and finer-angle v59 on the right">
-  <br><em>Same 93-frame scripted turn on the board. Left: v58. Right: v59. Enlarged UVC crops, paced for comparison.</em>
-</p>
+YuNet is included. Live recognition also requires compatible, authorized PFLD and spatial-eyelid weights supplied separately. Their filenames, interfaces and distribution scope are described in the [model contracts](runtime/v80/models/README.md).
 
-[View keyframes](media/yaw-ab-keyframes.png) · [View the earlier ear-to-cheek contour fix](media/ear-rim-ab.png)
+Current source lives under `runtime/v80/`, starting with [start_v80.py](runtime/v80/start_v80.py). Root `app.py` is a historical demo. Without recognition weights, the [model-free rendering replay](docs/run-on-mosaico.md#play-the-model-free-demo) demonstrates the character using preset landmarks; it does not recognize camera expressions.
 
-Powered by [ESP-VISION](https://github.com/espressif/esp-vision).
+## Documentation
+
+| What you need | Where to go |
+| --- | --- |
+| Install, start and roll back | [v80 setup](docs/run-v80.md) · [Exact runtime manifest](runtime/v80/runtime-manifest.json) |
+| Understand the current application | [Eye mapping and RAW path](docs/v80-direct-and-raw.md) · [Main application](runtime/v80/pfld_app.py) · [Tracking and measurements](runtime/v80/pfld_tracking.py) |
+| Character rendering and assets | [Cat rig](runtime/v80/kitten_rig.py) · [Brand artwork](assets/brand/README.md) |
+| Model interfaces and provenance | [Model contracts](runtime/v80/models/README.md) · [Third-party notices](THIRD_PARTY_NOTICES.md) |
+| Startup and framing UI | [UI design](docs/ui-ux-startup-guidance.md) · [Implementation and verification](docs/v78-startup-and-guidance.md) |
+| Results and known failures | [v80 evidence index](evidence/v80-direct/README.md) · [Startup stability record](evidence/v80-direct/startup-stability.json) |
+| Expression research | [Same-input mouth analysis](docs/mouth-validation-round1.md) · [Near-range and resolution investigation](docs/v77-near-range-resolution.md) |
+| Continue development | [Project handoff](HANDOFF.md) · [Validation plan](docs/validation-next.md) |
+| Other versions and background | [Full documentation index](docs/README.md) |
+
+## Project status
+
+The current source version is **v80**, with three video modes, direct independent eye mapping and a separate RAW path. Startup allocation and USB disconnect problems remain unresolved. Long-duration operation, complete physical power-cycle startup, physical buttons and natural joint eye/mouth behavior have not all been accepted. Wide-mouth, glasses/light-closure and near-range recovery limitations also remain.
+
+The [implementation report](docs/v80-direct-and-raw.md) and [evidence index](evidence/v80-direct/README.md) retain test conditions, successful checks and failures. Controlled replay timing is not presented as live-camera FPS.
