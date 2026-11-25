@@ -1,0 +1,28 @@
+{
+  "scope": "Final v80 default (204800 B) vs v79 raw path. Actual-board fixed RGB565, LCD and UVC; fixture decode/hash/log time excluded. Not live-camera FPS. First host safety transition is CAT, not counted as raw.",
+  "frames_each": 120,
+  "raw_frames_each": 119,
+  "steady_frames_each": 105,
+  "median_processing_ms": {
+    "v79": 116,
+    "v80": 81
+  },
+  "processing_reduction_percent": 30.17,
+  "median_lcd_ms": {
+    "v79": 54,
+    "v80": 54
+  },
+  "source_unchanged_all_raw_frames": true,
+  "uvc_submitted": {
+    "v79": 120,
+    "v80": 120
+  },
+  "negotiated_mode": {
+    "width": 320,
+    "height": 240,
+    "interval_us": 100000
+  },
+  "native_encoder_fallback": false,
+  "old-raw1_decoded_jpeg_frames_including_repeats_fallback": 302,
+  "new-raw-final_decoded_jpeg_frames_including_repeats_fallback": 250
+}

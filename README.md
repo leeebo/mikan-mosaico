@@ -1,71 +1,49 @@
-# Mikan · a cat avatar camera for Mosaico
+# Mikan · a private USB cat camera for Mosaico
 
 [![Powered by ESP-VISION](https://img.shields.io/badge/Powered%20by-ESP--VISION-b71927?style=flat-square)](https://github.com/espressif/esp-vision)
-[![Board: ESP32-S31 Mosaico](https://img.shields.io/badge/Board-ESP32--S31%20Mosaico-214761?style=flat-square)](docs/run-v78.md)
 [简体中文](README.zh-CN.md)
 
-Mikan turns your head motion, mouth opening and independent eyelids into a ginger cat. Capture, inference, single-rig rendering, LCD and USB UVC output run entirely on **ESP32-S31 Mosaico**, with **ESP-VISION 2026.11.14** and no personal calibration.
+Mikan starts with a ginger cat instead of showing the person and room. Capture, inference, rendering, LCD and USB UVC run on **ESP32-S31 Mosaico**, using official **ESP-VISION 2026.11.14**, without personal calibration.
 
-The current public source snapshot is **v78**, tested on 2026-11-23. It adds a Mikan startup animation and bottom guidance while retaining the v77 expression pipeline. **Compatible PFLD and custom eyelid weights must be supplied separately; this is not a complete ready-to-run live bundle.** [Model contracts](runtime/v78/models/README.md)
+The current public source candidate is **v80**, published 2026-11-25 with board evidence from 2026-11-24. It removes coupled eye rules and adds a RAW path without inference or overlays. **Startup/camera allocation and USB disconnect failures remain unresolved. Compatible authorized PFLD and custom eyelid weights must be supplied separately. This is not a complete ready-to-run model bundle or a fully accepted stable release.** [Model contracts](runtime/v80/models/README.md)
 
-| Startup brand | Runtime guidance |
-| :---: | :---: |
-| <img src="evidence/v78-ui/startup-lcd.jpg" width="240" alt="Native Mosaico LCD startup brand"> | <img src="evidence/v78-ui/runtime-lcd-guidance.jpg" width="240" alt="Native LCD with the cat and a bottom guidance notice"> |
+[Setup](docs/run-v80.md) · [18-file manifest](runtime/v80/runtime-manifest.json) · [Implementation and evidence](docs/v80-direct-and-raw.md) · [Handoff](HANDOFF.md) · [Documentation](docs/README.md)
 
-Actual 480×480 LCD captures, not design mockups. The guidance page is scaled and its text is visibly soft; improving it remains open. Normal tracked rendering retains the native 320-square cat canvas.
-
-[Setup](docs/run-v78.md) · [Implementation and evidence](docs/v78-startup-and-guidance.md) · [Project handoff](HANDOFF.md) · [Documentation](docs/README.md)
-
-## Controls and behavior
+## Controls and output
 
 | AI button | Action |
 | --- | --- |
-| Short press | Centered cat ↔ face-following camera overlay |
-| Hold at least 650ms | Toggle the landmark page |
-| Short press in the landmark page | Return to the previous mode |
+| Short press | Cat → camera overlay → RAW → cat |
+| Hold at least 650ms, then release | Return to cat |
 
-Mouth aperture is continuous and prioritized for the current frame. Each eye uses its own two-of-three valid-observation vote. Pitch and eyebrow effects are disabled. The startup logo uses preset eye/mouth patches and preencoded UVC JPEGs, without additional inference models or live 3D rendering. It is an application startup screen; power-cycle autostart is not configured by v78.
+Live mode is not persisted. An observed USB stream transition returns to cat; a reopen faster than the application observation interval is not guaranteed. Overlay tracking loss temporarily selects the private cat. RAW deliberately exposes the camera and does not depend on tracking. Cat mode still captures images locally for inference; it does not disable the sensor. An overlay is not a guarantee of anonymity. The application adds no recording or network transmission.
 
-Guidance appears only after sustained tracking loss, using current evidence for generic positioning or frame-boundary rejection. The app does not claim to distinguish “nobody present”, “half face” or “too close” from a generic detection failure.
+Each eye independently maps the current valid gap `<= .096` to closed, otherwise open/neutral. There are no votes, coupled conditions, candidates or holds. Model mistakes therefore appear directly. The existing mouth-first, usually post-display eye scheduling remains. The firmware, weights, eye measurements and mouth geometry are unchanged from v78.
 
-```mermaid
-flowchart LR
-  Camera["Color QVGA camera"] --> Track["PFLD every frame"]
-  Camera --> Detect["YuNet acquisition / recovery"]
-  Detect --> Track
-  Track --> Mouth["20 lip points · continuous opening"]
-  Track --> Crops["Two 48 × 32 eye crops"]
-  Crops --> Eyes["Shared eyelid model · independent votes"]
-  Mouth --> Rig["Single rig and yaw atlas"]
-  Eyes --> Rig
-  Rig --> Output["LCD + USB UVC"]
-```
+RAW writes the source directly to the LCD, skips tracking, expression inference, labels, guidance and scene composition, and only adapts dimensions for USB when required. Encoding and LCD transfer still cost time. The default shared pixel buffer returns to 204800 B, saving 152704 B from the larger experiment; notification text returns to the softer v78 scaled rendering.
 
-Ordinary rendering submits the current mouth before scheduled eye inference. The cat uses depth-projected textures and a yaw atlas for a 2.5D appearance, rather than a complete real-time 3D mesh. [Inherited expression architecture](docs/current-v77.md)
+## Verified scope and open failures
 
-## Measured scope
+| Check | Result |
+| --- | --- |
+| Portable policy checks | 29 host and MicroPython checks passed |
+| v78/current-eye fixed-input comparison | 105 frames each; mouth, tracking, crop and raw eye measurements agree; direct mapping matches |
+| RAW fixed-input comparison | 120 observations each; 119 RAW frames preserve source pixels; steady median 116→81 ms, about 30% less |
+| Mode and control regressions | 84 mode/guard frames and 90 software-button/actual host UVC reconnect frames passed |
+| Physical sensor smoke test | 80 frames, UVC 80/80; 20 RAW frames median 129 ms; no valid face tracking |
+| Deployment identity | 18 original file byte counts and SHA256 verified |
 
-The v77 baseline ran 260 public-input observations in one sequence. Final v78 verification used two bounded runs: **114 expression/landmark observations + 146 recovery/guidance observations**, each after a hard reset with native UVC enabled.
+Fixed-input tests replace camera samples. Software buttons do not count as physical button acceptance. Controlled timing excludes fixture decoding/hashing/logging. The physical sensor smoke test uses a software mode sequence without replacing camera pixels. It does not establish facial accuracy or optical latency. Neither timing figure is delivered camera FPS. Negotiated USB is 320×240 MJPEG at 10 Hz.
 
-| Controlled replay metric | v77 | v78 |
-| --- | ---: | ---: |
-| Centered processing throughput | 6.308FPS | 6.300FPS |
-| Overlay processing throughput | 3.891FPS | 3.954FPS |
-| Minimum Python free | 172,896B | 417,056B |
-| Minimum IDF free | 139,771B | 238,979B |
-| Minimum largest IDF block | 31,744B | 100,352B |
-| UVC submissions | 258/260 | 260/260 |
+A larger canvas disconnected USB in three model/video runs. Restoring the v78 buffer passed bounded checks, but after the successful physical sensor run a later production relaunch failed to allocate the camera DVP backup buffer and USB disconnected again. A requested hard reset and explicit main launch recovered the cat view. **The smaller buffer does not solve all startup/stability failures.** [Failure record](evidence/v80-direct/startup-stability.json) · [All measured scope](evidence/v80-direct/README.md)
 
-All 114 stable outputs match v77, as do the measurements of all 132 observations tracking in both versions. Recovery includes 13 state differences under the wall-clock detector cooldown. A previous long candidate run was host-terminated at frame205 and is excluded from completed results.
+Natural eye/mouth behavior, physical buttons, long-duration camera operation, resource peaks and complete physical power-cycle autostart remain unaccepted. Large-mouth underestimation, pressed-lip false opening, glasses and near-range recovery remain open. [Next work](HANDOFF.md)
 
-Throughput excludes fixture decoding and deliberate dwell; repeated static centered inputs benefit from caching. These are not live-camera FPS, general accuracy or optical-latency claims. Python and IDF allocator figures must not be added. [Full protocol and limitations](docs/v78-startup-and-guidance.md) · [Numerical evidence](evidence/v78-ui/README.md)
+## Source and deployment
 
-## Run and continue
+Current modules are under `runtime/v80/`; the manifest includes 17 runtime dependencies and a separate candidate `main.py` entry. Source byte hashes match the recorded development checkpoint; only manifest paths and publication metadata differ. Upload each supplied or externally provisioned file to its explicit manifest device path, verify it, and start the independent v80 entry before considering main replacement. Root `app.py` and root `runtime-manifest.json` remain historical v59 entries.
 
-- [v78 setup and exact 15-file manifest](docs/run-v78.md): five new UI/application files live under an independent device directory, with existing shared modules and artwork reused. YuNet is included; the two external weight contracts remain unchanged.
-- [Known challenges and next work](HANDOFF.md): notification clarity, large-mouth underestimation, pressed-lip false openings, glasses and near-range loss remain open. The UI update does not resolve model accuracy.
-- [Mouth same-input investigation](docs/mouth-validation-round1.md): 117 board inferences and 19 exact RGB565/FP32 comparisons; one public subject, not a multi-person benchmark.
-- [Historical rendering-only demo](docs/run-on-mosaico.md#play-the-model-free-demo): preserved v59 code uses scripted landmarks to demonstrate rendering without inference models. It does not recognize camera expressions.
+The v78/v77 snapshots and model-free scripted rendering demo are preserved. The demo renders preset landmarks and does not recognize camera expressions. Public history is separate from local research history. Personal images, raw logs, dataset crops, experimental caches and the two external model weights are omitted. [Third-party notices](THIRD_PARTY_NOTICES.md)
 
 ## How the cat turns
 
@@ -77,11 +55,5 @@ One six-bone rig drives the head, jaw, eyelids, muzzle, and nose. Artwork is pro
 </p>
 
 [View keyframes](media/yaw-ab-keyframes.png) · [View the earlier ear-to-cheek contour fix](media/ear-rim-ab.png)
-
-## Provenance and release history
-
-Runtime Python files are copied byte-for-byte from the verified local checkpoint `e7feab2`; the public branch has its own publication history. New v78 files are under `runtime/v78`, with reviewed branding sources and cat-only screenshots. Original v77/v59 source and demonstrations remain available. Root `app.py` and `runtime-manifest.json` are historical v59 entries, not the current v78 pipeline.
-
-Personal captures, public-dataset crops, raw device logs and experimental caches are omitted. PFLD and custom spatial-eyelid weights remain external. [Third-party notices](THIRD_PARTY_NOTICES.md)
 
 Powered by [ESP-VISION](https://github.com/espressif/esp-vision).

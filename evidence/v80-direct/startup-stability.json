@@ -1,0 +1,10 @@
+{
+  "scope": "Post-regression production relaunch; same board and official2026.11.14. Not part of the successful80-frame live test.",
+  "passive_lcd_after_first_relaunch": "APP UNAVAILABLE",
+  "foreground_relaunch": "sensor.reset failed ESP_FAIL at start_stream; three retries log no mem for DVP backup buffer; safe page CAMERA UNAVAILABLE reached",
+  "usb_event": "SERIAL_ERROR after11602ms, device re-enumerated; user previously confirmed no manual operation",
+  "response": "Hard reset requested successfully; immediate start failed while serial not yet available. Waited and re-inspected same device before next explicit main launch.",
+  "interpretation": "Startup/camera/USB stability unresolved. This is a smaller-default-canvas failure too; previous larger-canvas isolation is bounded evidence, not proof of complete fix or sole root cause.",
+  "evidence_local": ".tmp/product-v80/final-error-log.ndjson",
+  "final_recovery": "Hard reset requested, endpoint re-enumeration allowed to finish; identity rechecked, explicit /flash/main.py launch succeeded, passive LCD shows active CAT. No claim that root cause or physical power-cycle autostart is solved."
+}

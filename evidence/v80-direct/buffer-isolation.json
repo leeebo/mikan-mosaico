@@ -1,0 +1,17 @@
+{
+  "user_confirmed_no_manual_disconnect": true,
+  "large_canvas_bytes": 357504,
+  "large_canvas_with_video_runs": {
+    "direct-eyes1": 33,
+    "direct-eyes2": 17,
+    "direct-eyes3-clean": 14
+  },
+  "failure": "USB CDC and UVC disconnect/re-enumeration; no Python Traceback",
+  "large_canvas_without_usb_video_frames_passed": 105,
+  "unchanged_v78_with_usb_video_frames_passed": 105,
+  "restored_v78_buffer_bytes": 204800,
+  "restored_buffer_with_usb_video_frames_passed": 105,
+  "final_default_modes_frames_passed": 84,
+  "final_default_button_reconnect_frames_passed": 90,
+  "interpretation": "Failure reproduced with larger canvas path and avoided with v78-size default in these tests. Exact driver/allocator/transport cause not isolated; no claim of firmware root cause."
+}

@@ -1,0 +1,40 @@
+{
+  "scope": "Actual-board models/LCD/UVC with fixed camera and software button adapters; real host UVC client closed/reopened. Not physical button or camera acceptance.",
+  "frames": 90,
+  "sampled_modes": {
+    "7": [
+      1,
+      1
+    ],
+    "17": [
+      2,
+      2
+    ],
+    "27": [
+      0,
+      0
+    ],
+    "37": [
+      1,
+      1
+    ],
+    "47": [
+      2,
+      2
+    ],
+    "55": [
+      2,
+      2
+    ],
+    "60": [
+      0,
+      0
+    ],
+    "89": [
+      0,
+      0
+    ]
+  },
+  "first_safe_after_host_close": 57,
+  "end_mode": 0
+}

@@ -1,6 +1,15 @@
 # Documentation
 
-Current public source snapshot: **v78**, using the v77 expression pipeline. Compatible external PFLD and spatial-eyelid weights are required for live operation.
+Current public source candidate: **v80**. Startup/camera/USB stability remains unresolved; compatible external PFLD and eyelid weights are required.
+
+- [v80 deployment and rollback](run-v80.md)
+- [Direct eyes, RAW route, measurements and failures](v80-direct-and-raw.md)
+- [v80 runtime manifest](../runtime/v80/runtime-manifest.json)
+- [External model contracts](../runtime/v80/models/README.md)
+- [v80 numerical evidence](../evidence/v80-direct/README.md)
+- [Current project handoff](../HANDOFF.md)
+
+Historical documents retain their original measured scope and controls, rather than describing v80 behavior:
 
 - [v78 setup and exact file manifest](run-v78.md)
 - [Startup animation, guidance, measurements and limitations](v78-startup-and-guidance.md)

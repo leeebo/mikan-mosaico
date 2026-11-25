@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-24",
+  "board": {
+    "board": "ESP32_S31_MOSAICO",
+    "firmwareVersion": "2026.11.14"
+  },
+  "firmware_changed": false,
+  "weights_changed": false,
+  "mouth_measurement_changed": false,
+  "eye_mapping": "Per eye: valid gap <= .096 -> closed; else open/neutral. No coupling, votes, candidates, hold or expiry. Original post-display eye scheduling retained.",
+  "raw_pipeline": "Early branch: direct LCD source, native UVC RGB input; only dimensions adapted when necessary. No inference, rig, pose, landmark, label or notification processing.",
+  "default_pixel_buffer_bytes": 204800,
+  "bytes_saved_from_v79": 152704,
+  "runtime_files_sha256_verified": 18,
+  "installed_entry": "/flash/mikan-v80-direct/start.py",
+  "installed_autostart": "/flash/main.py",
+  "previous_source_snapshot": ".tmp/product-v80/base/",
+  "camera_capture": "Earlier minimal sensor initialization failed ESP_FAIL; final explicit production launch succeeded and a bounded physical sensor 80-frame CAT/OVERLAY/RAW/CAT run passed, UVC80/80. Cause of intermittent initialization failure remains unknown.",
+  "remaining_limits": [
+    "No valid face tracking in the final live run; natural eyes/mouth accuracy and optical response remain unverified",
+    "Live RAW 20-frame median processing129ms; not paired with v79 on the same scene and not a delivered FPS measurement",
+    "UVC negotiated320x240,100000us interval10Hz",
+    "Notice page uses v78 scaled composition and may look softer than experimental native canvas",
+    "No temporal eye correction; individual model errors show directly",
+    "Full physical power-cycle autostart and long-duration camera stability remain unverified",
+    "Production relaunch after80-frame test failed DVP backup allocation and disconnected USB; recovered after requested hard reset, complete cause unresolved"
+  ],
+  "publication": "Source snapshot from development checkpoint 3455116bfaa65ae51f85a16636ff790559ce1fc2; external weights and raw test data excluded. Historical board test state, not current device availability.",
+  "final_boot_native_lcd_matches_camera_fault_page": false,
+  "final_state": "After requested hard reset and endpoint re-inspection, /flash/main.py explicitly restarted successfully. Passive LCD shows active private CAT (not fault page). Earlier relaunch DVP allocation failure and USB disconnect remain unresolved; no physical power-cycle autostart acceptance.",
+  "physical_camera_regression": "physical-live.json",
+  "startup_stability": "startup-stability.json",
+  "development_runtime_manifest_sha256": "c8648a138ef0f8fb65a9a3f2c36e4fd6c55706160ca661aaa499435b70ce083b",
+  "public_runtime_manifest_sha256": "8f35ecb5edb434410c404a7b56a7a60abca641ae2655437ca4ec5eaf5d95a69e"
+}

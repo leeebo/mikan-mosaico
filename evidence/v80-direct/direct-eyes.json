@@ -1,0 +1,18 @@
+{
+  "scope": "Actual-board model/LCD/UVC on fixed RGB565 input, v78-size pixel allocation; physical camera bypassed. Eye inference retains the inherited post-display schedule, so current results feed subsequent composition without additional votes.",
+  "frames_each": 105,
+  "v78_reference_mismatches": {
+    "status": [],
+    "mouth_raw": [],
+    "crop": [],
+    "gaps": [],
+    "eye_observed": [],
+    "mouth_control": []
+  },
+  "direct_eye_mapping_mismatches": [],
+  "uvc_submitted": {
+    "v78": 105,
+    "v80": 105
+  },
+  "default_pixel_buffer_bytes": 204800
+}

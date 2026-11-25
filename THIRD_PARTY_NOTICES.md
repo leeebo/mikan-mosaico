@@ -18,3 +18,7 @@ The listed third-party licenses apply to their respective components. This repos
 ## v78 startup artwork
 
 The brand pack contains project-created cat logo artwork and a raster Mikan wordmark selected during the design review. Startup poses are pre-rendered eye/mouth patches; they are not camera captures or new inference models. Source artwork and the offline pack builder are included under assets/brand and tools/bake_brand_ui.py. The PFLD and custom spatial-eyelid weights remain externally supplied under the existing model-contract policy.
+
+## v80 source candidate
+
+v80 reuses the v78 firmware/model interfaces and artwork. No new model weights are distributed. The current external model contracts are under runtime/v80/models/README.md.

@@ -1,31 +1,34 @@
-# Mikan project handoff · v78 public snapshot
+# Mikan project handoff · v80 public source candidate
 
-Published 2026-11-24 from the verified local checkpoint `e7feab2`. This document describes that snapshot, not the current physical state of a device or later uncommitted development.
+Published2026-11-25 from development checkpoint `3455116bfaa65ae51f85a16636ff790559ce1fc2`. Most recent device evidence is 2026-11-24. This closeout publishes source and evidence without reconnecting hardware. It does not establish current device availability or resolve the recorded failures.
 
 ## Start here
 
-- [Setup](docs/run-v78.md) · [15-file deployment manifest](runtime/v78/runtime-manifest.json)
-- [Runtime source](runtime/v78/pfld_app.py) · [v78 implementation and measurements](docs/v78-startup-and-guidance.md)
-- [Model contracts](runtime/v78/models/README.md) · [Third-party notices](THIRD_PARTY_NOTICES.md)
-- [Selected evidence](evidence/v78-ui/README.md) · [Documentation index](docs/README.md)
+- [Setup and rollback](docs/run-v80.md) · [18-file manifest](runtime/v80/runtime-manifest.json)
+- [Runtime modules](runtime/v80/pfld_app.py) · [External model contracts](runtime/v80/models/README.md)
+- [Implementation and timing scope](docs/v80-direct-and-raw.md) · [Numerical evidence](evidence/v80-direct/README.md)
+- [Startup failure](evidence/v80-direct/startup-stability.json) · [Third-party notices](THIRD_PARTY_NOTICES.md)
 
-## Preserved behavior
+## Final behavior
 
-All camera capture, detection, expression inference, single-rig rendering, LCD and UVC output run on Mosaico with ESP-VISION 2026.11.14. There is no personal calibration. Mouth opening is continuous and prioritized for the current frame. Eyelids use independent two-of-three valid-observation votes. Centered cat is default; a short AI press switches overlay, a hold of at least 650ms toggles landmarks. Pitch and eyebrow effects are disabled.
+Default CAT protects the person/background. AI short press cycles CAT/OVERLAY/RAW; hold at least 650ms returns to CAT. Observed host stream transitions return to CAT, without clearing still-active tracking except when leaving paused RAW inference. Overlay falls back to private CAT while tracking is unreliable. Modes are not persisted. Physical power-cycle startup is not accepted.
 
-The expression models are unchanged from v77. v78 adds the Mikan brand screen, preset eye/mouth startup patches and evidence-based bottom guidance. It keeps the firmware and original main.py untouched; automatic power-cycle startup is not configured by this snapshot.
+The latest instruction supersedes v78/v79 eye history: current valid gap <=.096 independently maps each eye to closed; otherwise open/neutral. No temporal votes, candidates, hold or bilateral conditions remain. The measurement model and parameters are unchanged. Mouth-first scheduling remains, so no zero-latency claim is made.
 
-## Verified scope
+RAW avoids inference, labels, rig/pose updates, guidance and scene composition. It preserves the source, writes directly to LCD and only adapts USB dimensions as needed. Native encoding is preferred with a cached fallback after failure. Models remain resident. Firmware stays official2026.11.14; weights, mouth geometry and eye measurement stay unchanged; pitch and eyebrow effects remain disabled.
 
-The final candidate completed two bounded public-input runs: 114 expression/landmark observations and 146 recovery/guidance observations. All 114 stable outputs match v77, and the 132 observations tracking in both versions have identical expression measurements. Recovery has 13 state differences under the wall-clock detection cooldown. UVC submissions were 260/260. Centered/overlay processing throughput was 6.300/3.954 FPS. These are controlled replay figures, not a live-camera accuracy or optical-latency guarantee. A previous continuous run was host-terminated at 205 frames and is excluded from completed results.
+## Evidence and unresolved work
 
-Native 480 LCD captures show the complete startup brand and the cat with a bottom notice. The startup worker, real-camera 24-frame smoke test, sprite decoding and exact deployment hashes passed. [Full evidence and caveats](docs/v78-startup-and-guidance.md)
+29 policy checks,105 fixed-input comparison frames,120 RAW observations per version,84 mode frames and90 control/reconnect frames passed. There were119 actual RAW observations after the initial safety CAT frame. Steady controlled RAW processing median116→81ms. Independent physical sensor80-frame smoke test completed UVC80/80, with20 RAW frames median129ms, no valid face tracking. The raw figures are different scenes/protocols, not paired live FPS. [Evidence scope](evidence/v80-direct/README.md)
 
-## Open challenges and next work
+Three large-canvas runs disconnected USB without manual user operations. The default returns to204800B, saving152704B, and bounded checks passed. However a subsequent production relaunch on the smaller default failed DVP backup allocation and disconnected USB. Hard-reset recovery and an active private CAT LCD were last observed; the full root cause remains unresolved.
 
-1. **Guidance clarity:** reusing the 320-square buffer avoids full-screen memory pressure, but the guidance page is scaled and its text is visibly soft. Improve the notification without shrinking the cat or regressing the normal native 320 rendering.
-2. **Mouth geometry:** large-opening underestimation and pressed-lip false opening also occur in FP32 on exact RGB565 inputs. Increasing animation gain or changing a denominator alone is insufficient. [Same-input investigation](docs/mouth-validation-round1.md)
-3. **Eye reliability and near range:** glasses, light closure, single-eye actions and boundary rejection still need held-out and joint dynamic validation. [Algorithm plan](docs/validation-next.md) · [Near-range evidence](docs/v77-near-range-resolution.md)
-4. **Reproducibility:** compatible authorized PFLD and custom eyelid weights must be supplied separately. Shapes alone do not establish equivalence. The public package is not a complete ready-to-run live bundle.
+Next work: isolate cold/warm startup, camera contiguous-memory and model/UI lifecycle costs; measure real new-frame delivery; validate physical buttons, full power cycles, long-duration operation and joint natural eye/mouth actions. Do not describe the stage closeout as a stable product acceptance. Mouth geometry and near-range limitations persist. [Mouth analysis](docs/mouth-validation-round1.md) · [Near-range evidence](docs/v77-near-range-resolution.md)
 
-Keep device ownership serialized, application paths distinct and temporary captures project-local. Check actual board identity before hardware access. Preserve mouth/eye behavior and qualify measurements by their tested scope. The public branch keeps a separate release history; do not push local research history or personal captures as a shortcut to updating it.
+## Preservation and publication boundaries
+
+Compatible authorized PFLD and custom eyelid weights must be supplied separately. Their interface shapes alone do not establish equivalent behavior. YuNet and the existing project-created cat artwork retain their prior distribution scope.
+
+The v78/v77 runtime snapshots and historical v59 root rendering demo remain. Restore a historical version only with its matching files and manifest; do not apply its manifest to current modules. Local v79 backups mentioned in the implementation report are not distributed rollback bundles.
+
+Use the installed ESP-VISION plugin/CLI and exact-version official Knowledge, explicit selected endpoints and serialized ownership. Preserve unrelated device files. Temporary images/logs remain project-local. Publication excludes local research history, learning notes, original faces, raw video, dataset crops and two external weights.

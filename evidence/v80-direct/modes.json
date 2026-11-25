@@ -1,0 +1,11 @@
+{
+  "scope": "Final default v78-size framebuffer, actual-board fixed-input model/LCD/UVC; no physical camera capture",
+  "frames": 84,
+  "mode_routing_violations": [],
+  "raw_frames": 16,
+  "raw_inference_counters": [
+    42
+  ],
+  "uvc_submitted": 84,
+  "overlay_failure_safe_cat_frames": 20
+}
